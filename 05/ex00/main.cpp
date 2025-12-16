@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 17:06:18 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/12/16 17:08:41 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/12/16 18:47:01 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,68 @@
 #define NEON_GREEN	"\033[92m"
 
 #include "Bureaucrat.hpp"
+#include <iostream>
 
 void	tests()
 {
-	std::string << GREEN"🗣️===================== Bureaucraft tests =====================🗣️"RESET << std::endl;
-	std::string << "🥴 Creating default bureaucrat: " << std::endl;
-	Bureaucrat	defBureau();
-	std::string << "🤓 Creating valid bureaucrat ..." << std::endl;
-	Bureaucrat	validBureau("Val Bureau", 77);
+	std::cout << GREEN"\n===================== Bureaucraft tests =====================\n"RESET << std::endl;
+	std::cout << "👔 Creating default bureaucrat: " << std::endl;
+	Bureaucrat	defBureau;
+	std::cout << defBureau << std::endl;
+	std::cout << "----------------------\n" << std::endl;
+
+	try
+	{
+		std::cout << "🤓 Creating valid bureaucrat: " << std::endl;
+		Bureaucrat	validBureau("Val Bureau", 77);
+		std::cout << validBureau << std::endl;
+		std::cout << "----------------------\n" << std::endl;
+	}
+	catch (std::exception& e)
+	{
+		std::cerr << "Error: " << e.what() << std::endl;
+	}
+	
+	try
+	{
+		std::cout << "🧟 Creating invalid bureaucrat: " << std::endl;
+		Bureaucrat	invalidBureau("", 77000);
+		std::cout << invalidBureau << std::endl;
+		std::cout << "----------------------\n" << std::endl;
+	}
+	catch (std::exception& e)
+	{
+		std::cerr << "Error: " << e.what() << std::endl;
+	}
+	
+	std::cout << "🥴 Creating low grade bureaucrat: " << std::endl;
+	Bureaucrat	badBureau("lowOne", 149);
+	std::cout << badBureau << std::endl;
+	std::cout << "----------------------\n" << std::endl;
+	try
+	{
+		std::cout << "🥴 Low grade bureaucrat: " << std::endl;
+		badBureau.decrementGrade();
+		std::cout << badBureau << std::endl;
+		badBureau.decrementGrade();	
+		std::cout << badBureau << std::endl;
+	}
+	catch (std::exception& e)
+	{
+		std::cerr << "Error: " << e.what() << std::endl;
+	}
+	std::cout << "🤩 Creating high grade bureaucrat: " << std::endl;
+	Bureaucrat	goodBureau("goodOne", 2);
+	std::cout << goodBureau << std::endl;
+	std::cout << "----------------------\n" << std::endl;
+	
+	std::cout << GREEN"\n===================== End of tests =====================\n"RESET << std::endl;
 }
 
 int	main()
 {
 	tests();
 
+	std::cout << GREEN"\n===================== End of main() =====================\n"RESET << std::endl;
 	return 0;
 }

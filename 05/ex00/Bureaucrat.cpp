@@ -6,33 +6,40 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 13:27:13 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/12/16 16:13:24 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/12/16 18:48:33 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#define RESET	"\033[0m"
+#define RED	"\033[31m"
+#define GREEN	"\033[32m"
+#define YELLOW	"\033[33m"
+#define BLUE	"\033[34m"
+#define MAGENTA	"\033[35m"
+#define CYAN	"\033[36m"
+#define NEON_GREEN	"\033[92m"
 
 #include "Bureaucrat.hpp"
 #include <iostream>
 
 const char*	Bureaucrat::GradeTooHighException::what() const throw()
 {
-	return "Grade is too high! Expected range 1-150";
+	return CYAN"Grade is too high! Expected range 1-150"RESET;
 }
 
 const char*	Bureaucrat::GradeTooLowException::what() const throw()
 {
-	return "Grade is too low! Expected range 1-150";
+	return CYAN"Grade is too low! Expected range 1-150"RESET;
 }
         
 Bureaucrat::Bureaucrat() : name_("Default"), grade_(150)
 {
-	std::cout << "\n*Bureaucrat DEFAULT constructor called*\n" << std::endl;
-	std::cout << "Bureaucrat name = " << name_ << std::endl;
-	std::cout << "Bureaucrat grade = " << grade_ << std::endl;
+	std::cout << MAGENTA"*Bureaucrat DEFAULT constructor called*"RESET << std::endl;
 }
 
 Bureaucrat::Bureaucrat(const std::string& name, int grade) : name_(name), grade_(grade)
 {
-	std::cout << "\n*Bureaucrat constructor called*\n" << std::endl;
+	std::cout << MAGENTA"*Bureaucrat constructor called*"RESET << std::endl;
 	if (grade < 1)
 		throw Bureaucrat::GradeTooHighException();
 	if (grade > 150)
@@ -41,12 +48,12 @@ Bureaucrat::Bureaucrat(const std::string& name, int grade) : name_(name), grade_
 
 Bureaucrat::Bureaucrat(const Bureaucrat& other) : name_(other.name_), grade_(other.grade_)
 {
-	std::cout << "\n*Bureaucrat COPY constructor called*\n" << std::endl;
+	std::cout << MAGENTA"*Bureaucrat COPY constructor called*"RESET << std::endl;
 }
 
 Bureaucrat& Bureaucrat::operator=(const Bureaucrat& other)
 {
-	std::cout << "\n*Bureaucrat ASSIGNMENT operator called*\n" << std::endl;
+	std::cout << MAGENTA"*Bureaucrat ASSIGNMENT operator called*"RESET << std::endl;
 	if (this != &other)
 		grade_ = other.grade_;
 	return *this;
@@ -54,7 +61,7 @@ Bureaucrat& Bureaucrat::operator=(const Bureaucrat& other)
 
 Bureaucrat::~Bureaucrat()
 {
-	std::cout << "\n*Bureaucrat destructor called*\n" << std::endl;
+	std::cout << MAGENTA"*Bureaucrat destructor called*\n"RESET << std::endl;
 }
 
 const std::string&	Bureaucrat::getName() const
