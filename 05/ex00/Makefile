@@ -6,7 +6,7 @@
 #    By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/16 16:14:55 by vdarsuye          #+#    #+#              #
-#    Updated: 2025/12/16 17:09:08 by vdarsuye         ###   ########.fr        #
+#    Updated: 2025/12/17 14:14:30 by vdarsuye         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ OBJS = $(SRCS:.cpp=.o)
 
 $(NAME): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME)
+	@echo "$(GREEN)✓ Built executable $(NAME)$(RESET)"
 
 %.o: %.cpp Makefile Bureaucrat.hpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@

@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 13:27:13 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/12/16 18:48:33 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/12/17 14:47:18 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ Bureaucrat& Bureaucrat::operator=(const Bureaucrat& other)
 
 Bureaucrat::~Bureaucrat()
 {
-	std::cout << MAGENTA"*Bureaucrat destructor called*\n"RESET << std::endl;
+	std::cout << MAGENTA"*Bureaucrat destructor called for " << name_ << "*\n"RESET << std::endl;
 }
 
 const std::string&	Bureaucrat::getName() const
