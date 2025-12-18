@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 15:18:31 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/12/17 18:05:53 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/12/18 15:05:14 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@ public:
 		virtual const char* what() const throw();
 	};
 
+	class AlreadySignedException : public std::exception
+	{
+	public:
+		virtual const char* what() const throw();
+	};
 private:
 	const std::string	name_;
 	bool			isSigned_;

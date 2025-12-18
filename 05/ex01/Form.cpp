@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 15:42:18 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/12/17 18:05:23 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/12/18 15:07:56 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,11 @@ const char*	Form::GradeTooHighException::what() const throw()
 const char*	Form::GradeTooLowException::what() const throw()
 {
 	return CYAN"Grade is too low! Expected range 1-150"RESET;
+}
+
+const char*	Form::AlreadySignedException::what() const throw()
+{
+	return CYAN"Form is already signed"RESET;
 }
 
 Form::Form() : name_("Default"), isSigned_(false), gradeToSign_(150), gradeToExecute_(150)
@@ -63,7 +68,7 @@ Form& Form::operator=(const Form& other)
 
 Form::~Form()
 {
-	std::cout << "Destructor called for " << name_ << std::endl;
+	std::cout << MAGENTA"*Destructor called for " << name_ << "*\n"RESET << std::endl;
 }
 
 const std::string&	Form::getName() const
@@ -88,6 +93,8 @@ int		Form::getGradeToExecute() const
 
 void		Form::beSigned(const Bureaucrat& b)
 {
+	if (isSigned_)
+		throw Form::AlreadySignedException();
 	if (b.getGrade() > gradeToSign_)
 		throw Form::GradeTooLowException();
 	isSigned_ = true;
