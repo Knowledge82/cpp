@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 16:54:48 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/12/18 18:17:19 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/12/19 15:26:14 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,12 @@ const char*	AForm::GradeTooLowException::what() const throw()
 
 const char*	AForm::AlreadySignedException::what() const throw()
 {
-	return CYAN"AForm is already signed"RESET;
+	return CYAN"Form is already signed"RESET;
+}
+
+const char*	AForm::FormNotSignedException::what() const throw()
+{
+	return CYAN"Form is not signed"RESET;
 }
 
 AForm::AForm() : name_("Default"), isSigned_(false), gradeToSign_(150), gradeToExecute_(150)

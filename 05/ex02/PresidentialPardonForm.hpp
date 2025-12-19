@@ -6,12 +6,15 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 18:27:18 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/12/18 18:32:16 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/12/19 15:22:54 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PRESIDENTIALPARDONFORM_HPP
 #define PRESIDENTIALPARDONFORM_HPP
+
+#include "AForm.hpp"
+#include <string>
 
 class PresidentialPardonForm : public AForm
 {

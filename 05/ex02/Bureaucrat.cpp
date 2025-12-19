@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 13:27:13 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/12/17 18:54:40 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/12/19 15:17:33 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #define NEON_GREEN	"\033[92m"
 
 #include "Bureaucrat.hpp"
-#include "Form.hpp"
+#include "AForm.hpp"
 #include <iostream>
 
 const char*	Bureaucrat::GradeTooHighException::what() const throw()
@@ -91,7 +91,7 @@ void	Bureaucrat::decrementGrade()
 	std::cout << "\n*Decrementing grade of bureaucrat*\n" << std::endl;
 }
 
-void	Bureaucrat::signForm(Form& form)
+void	Bureaucrat::signForm(AForm& form)
 {
 	try
 	{
@@ -101,6 +101,19 @@ void	Bureaucrat::signForm(Form& form)
 	catch (std::exception& e)
 	{
 		std::cout << name_ << " couldn't sign " << form.getName() << " because " << e.what() << std::endl;
+	}
+}
+
+void	Bureaucrat::executeForm(const AForm& form) const
+{
+	try
+	{
+		form.execute(*this);
+		std::cout << this->name_ << " executed " << form.getName() << std::endl;
+	}
+	catch (std::exception& e)
+	{
+		std::cout << name_ << " couldn't execute " << form.getName() << " because " << e.what() << std::endl;
 	}
 }
 
