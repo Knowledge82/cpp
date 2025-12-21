@@ -6,9 +6,18 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/19 13:41:31 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/12/19 15:23:43 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/12/21 11:57:23 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#define RESET	"\033[0m"
+#define RED	"\033[31m"
+#define GREEN	"\033[32m"
+#define YELLOW	"\033[33m"
+#define BLUE	"\033[34m"
+#define MAGENTA	"\033[35m"
+#define CYAN	"\033[36m"
+#define NEON_GREEN	"\033[92m"
 
 #include "RobotomyRequestForm.hpp"
 #include <iostream>
@@ -43,10 +52,10 @@ RobotomyRequestForm::~RobotomyRequestForm()
 
 void	RobotomyRequestForm::executeAction() const
 {
-	std::cout << "* BRRRRR DRRRR BZZZZ (and other drill sounds)*" << std::endl;
+	std::cout << YELLOW"* BRRRRR DRRRR BZZZZ (and other drill sounds)*"RESET << std::endl;
 	if (std::rand() % 2)
-		std::cout << target_ << " has been robotomized successfully" << std::endl;
+		std::cout << target_ << " has been robotomized " << NEON_GREEN << "successfully"RESET << std::endl;
 	else
-		std::cout << "Robotomy failed on " << target_ << std::endl;
+		std::cout << "Robotomy " << RED"failed"RESET << " on " << target_ << std::endl;
 }
 

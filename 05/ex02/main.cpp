@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 17:06:18 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/12/19 16:26:17 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/12/21 11:54:56 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,30 +46,44 @@ void	tests()
 	std::cout << GREEN"\n===== Creating forms =====\n"RESET << std::endl;
 	
 	// Shrubbery form
-	std::cout << "🪴 Creating shrubbery form: " << std::endl;
+	std::cout << GREEN"🪴 Creating shrubbery form: "RESET << std::endl;
 	ShrubberyCreationForm	shrub("home");
 	std::cout << shrub << std::endl;
+	std::cout << GREEN"🪴 Trying to execute non signed shrubbery form: "RESET;
 	goodBureau.executeForm(shrub);
+	std::cout << std::endl;
 	goodBureau.signForm(shrub);
 	goodBureau.executeForm(shrub);
 	badBureau.executeForm(shrub);
 	std::cout << "----------------------\n" << std::endl;
 	
 	// Robotomy form
-	std::cout << "🔫 Creating robotomy form: " << std::endl;
+	std::cout << GREEN"🔫 Creating robotomy form: "RESET << std::endl;
 	RobotomyRequestForm robot("Marvin");
 	std::cout << robot << std::endl;
+	std::cout << GREEN"🔫 Trying to execute non signed robotomy form: "RESET;
 	goodBureau.executeForm(robot);
+	std::cout << std::endl;
 	goodBureau.signForm(robot);
 	goodBureau.executeForm(robot);
 	badBureau.executeForm(robot);
+	std::cout << std::endl;
+	std::cout << GREEN"🔫 Multiply execution robotomy form to show 50\% probability of it (set of 10 forms): "RESET << std::endl;
+	for (int i = 1; i <= 10; i++)
+	{
+		std::cout << i << ": "; 
+		goodBureau.executeForm(robot);
+		std::cout << std::endl;
+	}
 	std::cout << "----------------------\n" << std::endl;
 
 	// Pardon form
-	std::cout << "⚖️  Creating pardon form: " << std::endl;
+	std::cout << GREEN"⚖️  Creating pardon form: "RESET << std::endl;
 	PresidentialPardonForm pardon("RandomDude");
 	std::cout << pardon << std::endl;
+	std::cout << GREEN"⚖️  Trying to execute non signed pardon form: "RESET;
 	goodBureau.executeForm(pardon);
+	std::cout << std::endl;
 	goodBureau.signForm(pardon);
 	goodBureau.executeForm(pardon);
 	badBureau.executeForm(pardon);
