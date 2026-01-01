@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 16:23:11 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/12/21 17:03:21 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2026/01/01 16:45:17 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,31 @@
 class	ScalarConverter
 {
 public:
-	static void	convert(const std::string& literal);
+	enum	LitType
+	{
+		CHAR,
+		INT,
+		FLOAT,
+		DOUBLE,
+		PSEUDO,
+		INVALID
+	};
+
+	static void	convert(const std::string& input);
+	static void	parseToDouble(const std::string& input, LitType type);
+
 private:
 	ScalarConverter();
 	ScalarConverter(const ScalarConverter& other);
 	ScalarConverter& operator=(const ScalarConverter& other);
 	~ScalarConverter();
 
-	static const std::string&	detectType(const std::string& input);
-	static bool			isChar(const std::string& literal);
-	static bool			isInt(const std::string& literal);
-	static bool			isFloat(const std::string& literal);
-	static bool			isDouble(const std::string& literal);
-	static bool			isPseudoLiteral(const std::string& literal);
+	static LitType	detectType(const std::string& input);
+	static bool	isPseudo(const std::string& literal);
+	static bool	isChar(const std::string& literal);
+	static bool	isInt(const std::string& literal);
+	static bool	isFloat(const std::string& literal);
+	static bool	isDouble(const std::string& literal);
 };
 
 #endif
