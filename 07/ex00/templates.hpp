@@ -1,0 +1,40 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   templates.hpp                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/05 15:47:51 by vdarsuye          #+#    #+#             */
+/*   Updated: 2026/01/05 17:09:12 by vdarsuye         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef TEMPLATES_HPP
+#define TEMPLATES_HPP
+
+template <typename T>
+void	swap(T& a, T& b)
+{
+	T temp = a;
+	a = b;
+	b = temp;
+}
+
+template <typename T>
+const T&	min(const T& a, const T& b)
+{
+	if (a < b)
+		return a;
+	return b;
+}
+
+template <typename T>
+const T&	max(const T& a, const T& b)
+{
+	if (a > b)
+		return a;
+	return b;
+}
+
+#endif
