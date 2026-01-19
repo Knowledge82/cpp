@@ -6,55 +6,49 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 15:37:25 by vdarsuye          #+#    #+#             */
-/*   Updated: 2026/01/16 17:28:19 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2026/01/18 18:10:22 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ARRAY_HPP
 #define ARRAY_HPP
 
+#include <iostream>
+
 template <typename T>
 class	Array
 {
 public:
-	Array() : data_(NULL), size_(0)
-	{
+	Array();
+	Array(unsigned int n);
+	Array(const Array& other);
+	Array&		operator=(const Array& other);
+	~Array();
 
-	}
-
-	Array(unsigned int n) : data_(NULL), size_(0)
-	{
-		if (n > 0)
-		{
-			data_ = new T[n];
-			for (int i = 0; i < n; i++)
-				data_[i] = T(); // default init
-		}
-	}
-
-	Array(const Array& other) : data_(NULL), size_(other.size_)
-	{
-		if (size_ > 0)
-		{
-			data_ = new T[size_];
-			for (int i = 0; i < size_; i++)
-				data_[i] = other.data_[i];
-		}
-	}
-
-	Array& operator=(const Array& other)
-	{
-
-	}
-
-	~Array()
-	{
-		delete[] data_;
-	}
+	T&			operator[](unsigned int index);
+	const T&	operator[](unsigned int other) const;
+	
+	unsigned int size() const;
 
 private:
-	T*		data_;
+	T*				data_;
 	unsigned int	size_;
 };
+
+template <typename T>
+std::ostream& operator<<(std::ostream& os, const Array<T>& arr)
+{
+	os << "[";
+	for (unsigned int i = 0; i < arr.size(); i++)
+	{
+		os << arr[i];
+		if (i < arr.size() - 1)
+			os << ", ";
+	}
+	os << "]";
+	return os;
+}
+
+#include "Array.tpp"
 
 #endif
