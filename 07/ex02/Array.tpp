@@ -7,13 +7,13 @@
 template <typename T>
 Array<T>::Array() : data_(NULL), size_(0)
 {
-	std::cout << MAGENTA"* Default constructor called *"RESET << std::endl;
+	std::cout << MAGENTA << "* Default constructor called *" << RESET << std::endl;
 }
 
 template <typename T>
 Array<T>::Array(unsigned int n) : data_(NULL), size_(n)
 {
-	std::cout << MAGENTA"* Constructor with size called *"RESET << std::endl;
+	std::cout << MAGENTA << "* Constructor with size called *" << RESET << std::endl;
 	if (size_ > 0)
 	{
 		data_ = new T[size_];
@@ -25,7 +25,7 @@ Array<T>::Array(unsigned int n) : data_(NULL), size_(n)
 template <typename T>
 Array<T>::Array(const Array& other) : data_(NULL), size_(other.size_)
 {
-	std::cout << MAGENTA"* Copy constructor called *"RESET << std::endl;
+	std::cout << MAGENTA << "* Copy constructor called *" << RESET << std::endl;
 	if (size_ > 0)
 	{
 		data_ = new T[size_];
@@ -37,7 +37,7 @@ Array<T>::Array(const Array& other) : data_(NULL), size_(other.size_)
 template <typename T>
 Array<T>& Array<T>::operator=(const Array& other)
 {
-	std::cout << MAGENTA"* Assignment operator called *"RESET << std::endl;
+	std::cout << MAGENTA << "* Assignment operator called *" << RESET << std::endl;
 	if (this != &other)
 	{
 		delete[] data_; // free old memory
@@ -80,7 +80,7 @@ unsigned int Array<T>::size() const
 template <typename T>
 Array<T>::~Array()
 {
-	std::cout << MAGENTA"* Destructor called *"RESET << std::endl;
+	std::cout << MAGENTA << "* Destructor called *" << RESET << std::endl;
 	delete[] data_;
 }
 
