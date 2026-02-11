@@ -8,7 +8,8 @@ MAGENTA = \033[35m
 CYAN = \033[36m
 NEON_GREEN = \033[92m
 
-NAME = array
+# Vars
+NAME = easyfind
 
 CXX = c++
 CXXFLAGS = -Wall -Werror -Wextra -std=c++98
@@ -17,6 +18,7 @@ SRCS = main.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
+#Rules
 all: $(NAME)
 
 $(NAME): $(OBJS)
@@ -24,7 +26,7 @@ $(NAME): $(OBJS)
 	@echo "$(GREEN)✓ Built executable $(NAME)$(RESET)"
 	@echo "Please run $(GREEN)./$(NAME)$(RESET)"
 
-%.o: %.cpp Makefile Array.hpp Array.tpp
+%.o: %.cpp %.tpp Makefile easyfind.hpp Colors.hpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
