@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/14 13:07:01 by vdarsuye          #+#    #+#             */
-/*   Updated: 2026/02/14 16:19:24 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2026/02/15 14:45:20 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	Span::addNumber(int num)
 
 int		Span::shortestSpan() const
 {
-	if (numbers_.size()) < 2
+	if (numbers_.size() < 2)
 		throw std::invalid_argument("Span: not enough elements to calculate span");
 
 	std::vector<int> sorted = numbers_;
@@ -66,7 +66,7 @@ int		Span::shortestSpan() const
 
 int		Span::longestSpan() const
 {
-	if (numbers_.size()) < 2
+	if (numbers_.size() < 2)
 		throw std::invalid_argument("Span: not enough elements to calculate span");
 
 	std::vector<int>::const_iterator minIt = std::min_element(numbers_.begin(), numbers_.end());
