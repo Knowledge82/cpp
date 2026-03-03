@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/01 12:49:24 by vdarsuye          #+#    #+#             */
-/*   Updated: 2026/03/01 13:18:17 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2026/03/03 11:17:51 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@ public:
 
 private:
 	std::map<std::string, double>	db_;
+	bool							isValidDate(const std::string& date) const;
+	bool							isValidValue(const std::string& value, double& out) const;
+	double							getRate(const std::string& date) const;
 
 };
 
