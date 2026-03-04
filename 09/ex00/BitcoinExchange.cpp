@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/01 13:03:33 by vdarsuye          #+#    #+#             */
-/*   Updated: 2026/03/03 17:09:45 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2026/03/04 12:14:37 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,10 @@ bool	BitcoinExchange::isValidValue(const std::string& value, double& out) const
 
 double	BitcoinExchange::getRate(const std::string& date) const
 {
-
+	std::map<std::string, double>::const_iterator it = db_.upper_bound(date);
+	if (it == db_.begin())
+		throw std::runtime_error("No price info for this date: " + date);
+	--it;
+	return it->second;
 }
 
