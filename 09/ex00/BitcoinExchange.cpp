@@ -6,13 +6,15 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/01 13:03:33 by vdarsuye          #+#    #+#             */
-/*   Updated: 2026/03/04 12:14:37 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2026/03/06 13:39:27 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "BitcoinExchange.hpp"
 #include <iostream>
 #include <fstream>
+#include <sstream>
+#include <stdexcept>
 
 BitcoinExchange::BitcoinExchange()
 {
@@ -38,14 +40,11 @@ BitcoinExchange::~BitcoinExchange()
 
 void	BitcoinExchange::loadDB(const std::string& filename)
 {
-	std::ifstream	file(filename);
+	std::ifstream			file(filename.c_str());
 	if (!file.is_open())
-	{
-		std::cerr << "Error: could not open file." << std::endl;
-		return;
-	}
+		throw std::runtime_error("Error: could not open file.");
 
-	std::string	line;
+	std::string				line;
 	std::getline(file, line); //ignoring the very first line
 	while (std::getline(file, line))
 	{
@@ -64,19 +63,43 @@ void	BitcoinExchange::loadDB(const std::string& filename)
 	}
 	file.close();
 }
-/*
-2. ЧИТАТЬ input.txt построчно
-   парсим "дата | значение"
-   валидируем каждую строку (плохая дата? отрицательное число? слишком большое?)
-
-3. ДЛЯ КАЖДОЙ валидной строки:
-   ищем дату в map через upper_bound → шаг назад
-   умножаем значение на цену из базы
-   выводим результат*/
 
 void	BitcoinExchange::processInput(const std::string& filename)
 {
+	std::ifstream			file(filename.c_str());
+	if (!file.is_open())
+		throw std::runtime_error("Error: could not open file.");
+	
+	std::string				line;
+	std::getline(file, line);
+	while (std::getline(file, line))
+	{
+		size_t				pos = line.find(" | ");
+		if (pos == std::string::npos)
+		{
+			std::cerr << "Error: bad input => " + line << std::endl;
+			continue;
+		}
+	
+		std::string			date = line.substr(0, pos);
+		if (!isValidDate(date))
+			continue;
 
+		std::string			valueStr = line.substr(pos + 3);
+		double				value;
+		if (!isValidValue(valueStr, value))
+			continue;
+		
+		try
+		{
+			double			result = getRate(date) * value;
+			std::cout << date << " => " << value << " = " << result << std::endl;
+		}
+		catch (std::runtime_error& e)
+		{
+			std::cerr << e.what() << std::endl;
+		}	
+	}
 }
 
 bool	BitcoinExchange::isValidDate(const std::string& date) const
