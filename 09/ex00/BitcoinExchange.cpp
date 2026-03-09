@@ -6,12 +6,13 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/01 13:03:33 by vdarsuye          #+#    #+#             */
-/*   Updated: 2026/03/06 13:39:27 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2026/03/09 13:31:52 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "BitcoinExchange.hpp"
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
@@ -93,7 +94,7 @@ void	BitcoinExchange::processInput(const std::string& filename)
 		try
 		{
 			double			result = getRate(date) * value;
-			std::cout << date << " => " << value << " = " << result << std::endl;
+			std::cout << date << " => " << value << " = " /*<< std::fixed << std::setprecision(2)*/ << result << std::endl;
 		}
 		catch (std::runtime_error& e)
 		{
@@ -106,7 +107,7 @@ bool	BitcoinExchange::isValidDate(const std::string& date) const
 {
 	if ((date.size() != 10) || (date[4] != '-' || date[7] != '-'))
 	{
-		std::cerr << "Error: bad input =>" << date << std::endl;
+		std::cerr << "Error: bad input => " << date << std::endl;
 		return false;
 	}
 
@@ -115,12 +116,12 @@ bool	BitcoinExchange::isValidDate(const std::string& date) const
 	std::istringstream	iss(date);
 	if (!(iss >> year >> dash >> month >> dash >> day))
 	{
-		std::cerr << "Error: bad input =>" << date << std::endl;
+		std::cerr << "Error: bad input => " << date << std::endl;
 		return false;
 	}
 	if (year <= 1900 || month < 1 || month > 12 || day < 1 || day > 31)
 	{
-		std::cerr << "Error: bad input =>" << date << std::endl;
+		std::cerr << "Error: bad input => " << date << std::endl;
 		return false;
 	}
 	return true;
@@ -131,7 +132,7 @@ bool	BitcoinExchange::isValidValue(const std::string& value, double& out) const
 	std::istringstream	iss(value);
 	if (!(iss >> out))
 	{
-		std::cerr << "Error: bad input =>" << value << std::endl;
+		std::cerr << "Error: bad input => " << value << std::endl;
 		return false;
 	}
 	if (out < 0)

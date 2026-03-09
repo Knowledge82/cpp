@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/01 12:49:24 by vdarsuye          #+#    #+#             */
-/*   Updated: 2026/03/03 11:17:51 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2026/03/09 13:02:24 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <map>
 #include <string>
+#include "Colors.hpp"
 
 class	BitcoinExchange
 {
