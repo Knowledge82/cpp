@@ -1,25 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Colors.hpp                                         :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/17 14:37:53 by vdarsuye          #+#    #+#             */
-/*   Updated: 2026/01/17 14:38:34 by vdarsuye         ###   ########.fr       */
+/*   Created: 2026/02/14 16:21:00 by vdarsuye          #+#    #+#             */
+/*   Updated: 2026/03/16 14:10:00 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef COLORS_HPP
-#define COLORS_HPP
+#include "RPN.hpp"
+#include <iostream>
 
-#define RESET       "\033[0m"
-#define RED         "\033[31m"
-#define GREEN       "\033[32m"
-#define YELLOW      "\033[33m"
-#define BLUE        "\033[34m"
-#define MAGENTA     "\033[35m"
-#define CYAN        "\033[36m"
-#define NEON_GREEN  "\033[92m"
+int	main(int argc, char **argv)
+{
+	if (argc != 2)
+	{
+		std::cerr << "Error\n";
+		return 1;
+	}
 
-#endif
+	try
+	{
+		int	result = RPN().evaluate(argv[1]);
+		std::cout << result << std::endl;
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << "Error\n";
+	}
+
+	return 0;
+}

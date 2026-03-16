@@ -9,12 +9,12 @@ CYAN = \033[36m
 NEON_GREEN = \033[92m
 
 # Vars
-NAME = btc 
+NAME = RPN 
 
 CXX = c++
 CXXFLAGS = -Wall -Werror -Wextra -std=c++98
 
-SRCS = main.cpp BitcoinExchange.cpp
+SRCS = main.cpp RPN.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
@@ -26,7 +26,7 @@ $(NAME): $(OBJS)
 	@echo "$(GREEN)✓ Built executable $(NAME)$(RESET)"
 	@echo "Please run $(GREEN)./$(NAME)$(RESET)"
 
-%.o: %.cpp Makefile BitcoinExchange.hpp Colors.hpp
+%.o: %.cpp Makefile RPN.hpp 
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:

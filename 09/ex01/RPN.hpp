@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 15:20:14 by vdarsuye          #+#    #+#             */
-/*   Updated: 2026/03/09 17:11:18 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2026/03/16 12:16:37 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #define RPN_HPP
 
 #include <string>
-#include
 
 class	RPN
 {
@@ -24,7 +23,7 @@ public:
 	RPN& operator=(const RPN& other);
 	~RPN();
 
-	int	evaluate(std::string input);
+	int	evaluate(const std::string& input);
 
 private:
 	int	calculate(char op, int var1, int var2);
