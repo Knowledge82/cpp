@@ -6,11 +6,12 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 16:45:17 by vdarsuye          #+#    #+#             */
-/*   Updated: 2026/03/16 16:48:42 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2026/03/17 18:09:35 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PmergeMe.hpp"
+#include <iostream>
 
 int	main(int argc, char **argv)
 {
