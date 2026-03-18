@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/01 13:03:33 by vdarsuye          #+#    #+#             */
-/*   Updated: 2026/03/09 13:31:52 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2026/03/18 18:58:48 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,11 @@ void	BitcoinExchange::loadDB(const std::string& filename)
 		throw std::runtime_error("Error: could not open file.");
 
 	std::string				line;
-	std::getline(file, line); //ignoring the very first line
+	std::getline(file, line);
+	if (!line.empty() && line[line.size() - 1] == '\r')
+		line.erase(line.size() - 1);
+	if (line != "date,exchange_rate")
+		throw std::runtime_error("Error: missing header.");
 	while (std::getline(file, line))
 	{
 		size_t				pos = line.find(',');
@@ -73,6 +77,10 @@ void	BitcoinExchange::processInput(const std::string& filename)
 	
 	std::string				line;
 	std::getline(file, line);
+	if (!line.empty() && line[line.size() - 1] == '\r')
+		line.erase(line.size() - 1);
+	if (line != "date | value")
+		throw std::runtime_error("Error: missing header.");
 	while (std::getline(file, line))
 	{
 		size_t				pos = line.find(" | ");
