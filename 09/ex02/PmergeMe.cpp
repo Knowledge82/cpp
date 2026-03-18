@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 16:48:51 by vdarsuye          #+#    #+#             */
-/*   Updated: 2026/03/17 18:16:01 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2026/03/18 19:10:34 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,14 @@ PmergeMe::~PmergeMe()
 
 static void	printSequence(const std::vector<int>& v)
 {
-	for (size_t i = 0; i < v.size() - 1; ++i)
+	for (size_t i = 0; i < v.size(); ++i)
 	{
 		if (i > 0)
 			std::cout << " ";
 		std::cout << v[i];
 	}
 }
-
+/*
 static void	printSequence(const std::deque<int>& d)
 {
 	for (size_t i = 0; i < d.size() - 1; ++i)
@@ -61,7 +61,7 @@ static void	printSequence(const std::deque<int>& d)
 		std::cout << d[i];
 	}
 }
-
+*/
 static long long	timestamp()
 {
 	timeval	tv;
@@ -109,25 +109,17 @@ void	PmergeMe::sortAndDisplay()
 	long long	t0 = timestamp();
 	sortVector();
 	long long	t1 = timestamp();
-
-	std::cout << "After: ";
-	printSequence(vec_);
-	std::cout << std::endl;
-
-
-	std::cout << "Before: ";
-	printSequence(deq_);
-	std::cout << std::endl;
 	
 	long long	t2 = timestamp();
 	sortDeque();
 	long long	t3 = timestamp();
 
 	std::cout << "After: ";
-	printSequence(deq_);
+	printSequence(vec_);
 	std::cout << std::endl;
-	std::cout << "Time to process a range of " << vec_.size() << "elements with std::vector : " << t1 - t0 << std::endl;
-	std::cout << "Time to process a range of " << deq_.size() << "elements with std::deque : " << t3 - t2 << std::endl;
+
+	std::cout << "Time to process a range of " << vec_.size() << " elements with std::vector : " << t1 - t0 << " us" << std::endl;
+	std::cout << "Time to process a range of " << deq_.size() << " elements with std::deque : " << t3 - t2 << " us" << std::endl;
 
 }
 
