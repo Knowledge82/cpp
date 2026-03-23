@@ -6,14 +6,16 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 16:48:51 by vdarsuye          #+#    #+#             */
-/*   Updated: 2026/03/21 18:34:51 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2026/03/23 17:12:21 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "Colors.hpp"
 #include "PmergeMe.hpp"
 
 #include <iostream>
 #include <iomanip>
+#include <sstream>
 #include <limits>
 #include <stdexcept>
 #include <algorithm>
@@ -45,6 +47,21 @@ long long	PmergeMe::nowMicroseconds()
 
 	return static_cast<long long>(tv.tv_sec) * 1000000LL
 		+ static_cast<long long>(tv.tv_usec);
+}
+
+std::string	PmergeMe::formatDuration(long long microseconds)
+{
+	std::ostringstream	oss;
+	oss << std::fixed << std::setprecision(3);
+
+	if (microseconds < 1000)
+		oss << static_cast<double>(microseconds) << " us";
+	else if (microseconds < 1000000)
+		oss << (static_cast<double>(microseconds) / 1000.0) << " ms";
+	else
+		oss << (static_cast<double>(microseconds) / 1000000) << " s";
+	
+	return oss.str();
 }
 
 void		PmergeMe::printSequence(const std::vector<int>& seq)
@@ -79,7 +96,7 @@ int			PmergeMe::parsePositiveIntStrict(const std::string& s)
 
 std::vector<int>		PmergeMe::parseToVector(int argc, char **argv)
 {
-	std::vector<int>	vec;
+	std::vector<int>			vec;
 	for (int i = 1; i < argc; ++i)
 		vec.push_back(parsePositiveIntStrict(argv[i]));
 	return vec;
@@ -87,7 +104,7 @@ std::vector<int>		PmergeMe::parseToVector(int argc, char **argv)
 
 std::deque<int>		PmergeMe::parseToDeque(int argc, char **argv)
 {
-	std::deque<int>	deq;
+	std::deque<int>				deq;
 	for (int i = 1; i < argc; ++i)
 		deq.push_back(parsePositiveIntStrict(argv[i]));
 	return deq;
@@ -95,52 +112,52 @@ std::deque<int>		PmergeMe::parseToDeque(int argc, char **argv)
 
 std::vector<std::size_t>	PmergeMe::jacobshtalInsertionOrder(std::size_t n)
 {
-	std::vector<std::size_t>	order;
 	if (n == 0)
-		return order;
+		return std::vector<std::size_t>();
 
-	std::vector<size_t>	jacob;
+	std::vector<std::size_t>	jacob;
+	jacob.push_back(0);
 	jacob.push_back(1);
-	jacob.push_back(3);
 	while (jacob.back() < n)
 	{
-		std::size_t	sz = jacob.size();
-		std::size_t	next = jacob[sz - 1] + 2 * jacob[sz - 2];
-		jacob.push_back(next);
+		std::size_t				sz = jacob.size();
+		jacob.push_back(jacob[sz - 1] + 2 * jacob[sz - 2]);
 	}
 
-	std::size_t	prev = 1;
-	for (size_t k = 1; k < jacob.size(); ++k)
+	std::vector<std::size_t>	order;
+	std::vector<bool>			used(n + 1, false);
+
+	for (std::size_t k = 2; k < jacob.size(); ++k)
 	{
-		std::size_t	current = jacob[k];
-		if (current > n)
-			current = n;
-		for (std::size_t x = current; x > prev; --x)
-			order.push_back(x);
-		if (current == n)
+		std::size_t				hi = jacob[k];
+		std::size_t				lo = jacob[k - 1] + 1;
+		if (hi > n)
+			hi = n;
+
+		// вставляем от hi вниз до lo
+		if (hi < lo)
+			continue;
+		for (std::size_t x = hi; ; --x)
+		{
+			if (!used[x])
+			{
+				order.push_back(x);
+				used[x] = true;
+			}
+			if (x == lo)
+				break;
+		}
+		if (hi == n)
 			break;
-		prev = jacob[k];
 	}
-
-	if (order.empty())
-	{
-		for (std::size_t idx = 2; idx <= n; ++idx)
-			order.push_back(idx);
-		return order;
-	}
-
-	std::vector<bool>	used(n + 1, false);
-	used[1] = true;
-	for (std::size_t i = 0; i < order.size(); ++i)
-	{
-		if (order[i] <= n)
-			used[order[i]] = true;
-	}
-	for (std::size_t idx = 2; idx <= n; ++idx)
-	{
-		if (!used[idx])
-			order.push_back(idx);
-	}
+	// добираем, если что-то осталось
+	for (std::size_t x = 1; x <= n; ++x)
+		if (!used[x])
+			order.push_back(x);
+	
+	if (order.size() != n)
+		throw std::runtime_error("Internal error");
+	
 	return order;
 }
 
@@ -150,68 +167,80 @@ std::vector<int> 			PmergeMe::fordJohnsonVector(const std::vector<int>& input)
 	if (input.size() <= 1)
 		return input;
 
-	bool				hasStraggler = (input.size() % 2 != 0);
-	int					straggler = 0;
-	if (hasStraggler)
-		straggler = input.back();
+	bool						hasStraggler = (input.size() % 2 != 0);
+	int							straggler = hasStraggler ? input.back() : 0;
 
 	// 1. make pairs
-	std::vector<Pair>	pairs;
+	std::vector<Pair>			pairs;
 	for (std::size_t i = 0; i + 1 < input.size(); i += 2)
 		pairs.push_back(Pair(input[i], input[i + 1]));
 
 	// 2. recurs sort of winners
-	std::vector<int> winners;
+	std::vector<int>			 winners;
 	for (std::size_t i = 0; i < pairs.size(); ++i)
 		winners.push_back(pairs[i].winner);
-	std::vector<int>	sortedWinners = fordJohnsonVector(winners);
+	std::vector<int>			sortedWinners = fordJohnsonVector(winners);
 
-	// 3. Восстанавливаем основную цепочку (mainChain) и список ожидающих (pending) 
-	std::vector<int>	mainChain;
-	std::vector<int>	pending;
-	std::vector<bool>	used(pairs.size(), false);
+	// 3. make mainChain + pending
+	// mainChain:	b1, a1, a2, a3, ...
+	// pending:		b2, b3, b4, ...
+	// запоминаем позиции a_k в mainChain (до вставки pending)
+	std::vector<int>			mainChain;
+	std::vector<Pending>		pending;
+	std::vector<bool>			used(pairs.size(), false);
+	std::vector<std::size_t>	pairIdx(sortedWinners.size());
 
 	for (std::size_t i = 0; i < sortedWinners.size(); ++i)
 	{
-		int			w = sortedWinners[i];
-		std::size_t	idx = 0;
-		while (idx < pairs.size())
-		{
-			if (!used[idx] && pairs[idx].winner == w)
-				break;
+		int						w = sortedWinners[i];
+		std::size_t				idx = 0;
+		while (idx < pairs.size() && (used[idx] || pairs[idx].winner != w))
 			++idx;
-		}
 		if (idx == pairs.size())
-		{
-			++i;
-			continue;
-		}
+			throw std::runtime_error("Internal error");
 		used[idx] = true;
-		if (i == 0)
-			mainChain.push_back(pairs[idx].loser); //b1
-		mainChain.push_back(pairs[idx].winner); //a1, a2, ...
-		if (i > 0)
-			pending.push_back(pairs[idx].loser); // b2, b3, ...
+		pairIdx[i] = idx;
 	}
 
-	// 4. Вставка из pending в порядке Якобсталя
+	// mainChain =  b1, a1, a2, a3, ...
+	mainChain.push_back(pairs[pairIdx[0]].loser);	// b1
+	for (std::size_t i = 0; i < sortedWinners.size(); ++i)
+		mainChain.push_back(sortedWinners[i]);		// a1, a2, ...
+
+	// pending = b2, b3, ...
+	for (std::size_t i = 1; i < sortedWinners.size(); ++i)
+	{
+		int	loser = pairs[pairIdx[i]].loser;
+		int	wbound = pairs[pairIdx[i]].winner;
+		pending.push_back(Pending(loser, wbound));
+	}
+	
+	// 4. Jacobsthal + bounded insertion по winnerBound
 	std::vector<std::size_t>	order = jacobshtalInsertionOrder(pending.size());
 
 	for (size_t i = 0; i < order.size(); ++i)
 	{
-		std::size_t	idx = order[i];
-		if (idx >= 1 && idx <= pending.size())
-		{
-			int	val = pending[idx - 1];
-			std::vector<int>::iterator it = std::upper_bound(mainChain.begin(), mainChain.end(), val); 
-			mainChain.insert(it, val);
-		}
+		std::size_t				kidx = order[i]; // 1-based index in pending
+		if (kidx < 1 || kidx > pending.size())
+			throw std::runtime_error("Internal error");
+
+		const Pending&			item = pending[kidx - 1];
+
+		std::vector<int>::iterator bound =
+			std::lower_bound(mainChain.begin(), mainChain.end(), item.winnerBound);
+		if (bound == mainChain.end() || *bound != item.winnerBound)
+			throw std::runtime_error("Internal error");
+		
+		std::vector<int>::iterator it =
+			std::upper_bound(mainChain.begin(), bound, item.loser);
+			mainChain.insert(it, item.loser);
 	}
 
 	// 5. Вставка хвоста
 	if (hasStraggler)
 	{
-		std::vector<int>::iterator it = std::upper_bound(mainChain.begin(), mainChain.end(), straggler);
+		std::vector<int>::iterator it =
+			std::upper_bound(mainChain.begin(), mainChain.end(), straggler);
 		mainChain.insert(it, straggler);
 	}
 
@@ -223,64 +252,85 @@ std::deque<int>			PmergeMe::fordJohnsonDeque(const std::deque<int>& input)
 	if (input.size() <= 1)
 		return input;
 
-	bool	hasStraggler = (input.size() % 2 != 0);
-	int		straggler = 0;
-	if (hasStraggler)
-		straggler = input.back();
+	bool						hasStraggler = (input.size() % 2 != 0);
+	int							straggler = hasStraggler ? input.back() : 0;
 
-	std::deque<Pair>	pairs;
+	// 1. Pairs
+	std::deque<Pair>			pairs;
 	for (std::size_t i = 0; i + 1 < input.size(); i += 2)
 		pairs.push_back(Pair(input[i], input[i + 1]));
 
-	std::deque<int> winners;
+	// 2. recurs sort of winners
+	std::deque<int>				winners;
 	for (std::size_t i = 0; i < pairs.size(); ++i)
 		winners.push_back(pairs[i].winner);
-	std::deque<int>	sortedWinners = fordJohnsonDeque(winners);
+	std::deque<int>				sortedWinners = fordJohnsonDeque(winners);
 
-	std::deque<int>	mainChain;
-	std::deque<int>	pending;
-	std::vector<bool>	used(pairs.size(), false);
+	// 3. restore mapping sortedWinners - pairs
+	std::vector<bool>			used(pairs.size(), false);
+	std::vector<std::size_t>	pairIdx(sortedWinners.size());
 
-	for (std::size_t i = 0; i < sortedWinners.size(); ++i)
+	for (std::size_t i = 0; i < sortedWinners.size(); i++)
 	{
-		int			w = sortedWinners[i];
-		std::size_t	idx = 0;
-		while (idx < pairs.size())
-		{
-			if (!used[idx] && pairs[idx].winner == w)
-				break;
+		int						w = sortedWinners[i];
+		std::size_t				idx = 0;
+
+		while (idx < pairs.size() && (used[idx] || pairs[idx].winner != w))
 			++idx;
-		}
 		if (idx == pairs.size())
-		{
-			++i;
-			continue;
-		}
+			throw std::runtime_error("Internal error");
 		used[idx] = true;
-		if (i == 0)
-			mainChain.push_back(pairs[idx].loser); //b1
-		mainChain.push_back(pairs[idx].winner); //a1, a2, ...
-		if (i > 0)
-			pending.push_back(pairs[idx].loser); // b2, b3, ...
+		pairIdx[i] = idx;
 	}
 
-	std::vector<std::size_t>	order = jacobshtalInsertionOrder(pending.size());
+	// build mainChain and pending
+	// mainChain: b1, a1, a2, ...
+	// pending: {b2, a2}, {b3, a3}, ...
+	
+	std::deque<int>				mainChain;
+	std::deque<Pending>			pending;
 
-	for (size_t i = 0; i < order.size(); ++i)
+	mainChain.push_back(pairs[pairIdx[0]].loser); // b1
+	for (std::size_t i = 0; i < sortedWinners.size(); ++i)
+		mainChain.push_back(sortedWinners[i]); // a1, a2, ...
+
+	for (std::size_t i = 1; i < sortedWinners.size(); ++i)
 	{
-		std::size_t	idx = order[i];
-		if (idx >= 1 && idx <= pending.size())
-		{
-			int	val = pending[idx - 1];
-			std::deque<int>::iterator it = std::upper_bound(mainChain.begin(), mainChain.end(), val); 
-			mainChain.insert(it, val);
-		}
+		int loser = pairs[pairIdx[i]].loser;
+		int wbound = pairs[pairIdx[i]].winner;
+		pending.push_back(Pending(loser, wbound));
 	}
 
-	// 5. Вставка хвоста
+	// 5. Jacobshtal insertion order over pending indices [1..n]
+	std::vector<std::size_t>	order = jacobshtalInsertionOrder(pending.size());
+	if (order.size() != pending.size())
+		throw std::runtime_error("Internal error");
+
+	// 6. bounded insertion
+	for (std::size_t i = 0; i < order.size(); ++i)
+	{
+		std::size_t	kidx = order[i];
+		if (kidx < 1 || kidx > pending.size())
+			throw std::runtime_error("Internal error");
+
+		const Pending&			item = pending[kidx - 1];
+
+		std::deque<int>::iterator bound =
+			std::lower_bound(mainChain.begin(), mainChain.end(), item.winnerBound);
+
+		if (bound == mainChain.end() || *bound != item.winnerBound)
+			throw std::runtime_error("Internal error");
+		
+		std::deque<int>::iterator pos =
+			std::upper_bound(mainChain.begin(), bound, item.loser);
+		mainChain.insert(pos, item.loser);
+	}
+
+	// 7. Вставка хвоста
 	if (hasStraggler)
 	{
-		std::deque<int>::iterator it = std::upper_bound(mainChain.begin(), mainChain.end(), straggler);
+		std::deque<int>::iterator it =
+			std::upper_bound(mainChain.begin(), mainChain.end(), straggler);
 		mainChain.insert(it, straggler);
 	}
 
@@ -328,19 +378,22 @@ void		PmergeMe::run(int argc, char **argv)
 
 	if (!isSorted(sortedVec) || !isSorted(sortedDeq))
 		throw std::runtime_error("Error");
+	else
+		std::cout << GREEN <<"Both containers are successfully sorted" << RESET << std::endl;
 
-	std::cout << "Before: ";
+	std::cout << GREEN << "Before: " << RESET;
 	printSequence(inputVec_);
 	std::cout << std::endl;
 
-	std::cout << "After: ";
+	std::cout << GREEN << "After: " << RESET;
 	printSequence(sortedVec);
 	std::cout << std::endl;
 
+
+	long long	elapsedVec = t1 - t0;
+	long long	elapsedDeq = t3 - t2;
 	std::cout << "Time to process a range of " << inputVec_.size()
-			<< " elements with std::vector : " << std::fixed << std::setprecision(5)
-			<< static_cast<double>(t1 - t0) << " us" << std::endl;
+			<< " elements with std::vector : " << formatDuration(elapsedVec) << std::endl;
 	std::cout << "Time to process a range of " << inputDeq_.size()
-			<< " elements with std::deque : " << std::fixed << std::setprecision(5)
-			<< static_cast<double>(t3 - t2) << " us" << std::endl;
+			<< " elements with std::deque : " << formatDuration(elapsedDeq) << std::endl;
 }

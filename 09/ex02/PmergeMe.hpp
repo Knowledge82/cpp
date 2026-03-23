@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 15:11:43 by vdarsuye          #+#    #+#             */
-/*   Updated: 2026/03/21 18:27:49 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2026/03/23 17:00:51 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,19 @@ private:
 		Pair(int a, int b) : winner(a >= b ? a : b), loser(a >= b ? b : a) {}
 	};
 
+	struct				Pending
+	{
+		int	loser;
+		int	winnerBound;
+
+		Pending(int l, int w) : loser(l), winnerBound(w) {}
+	};
+
 	std::vector<int>	inputVec_;
 	std::deque<int>		inputDeq_;
 	
 	static long long			nowMicroseconds();
+	static std::string			formatDuration(long long microseconds);
 	static int					parsePositiveIntStrict(const std::string& s);
 	static std::vector<int>		parseToVector(int argc, char **argv);
 	static std::deque<int>		parseToDeque(int argc, char **argv);
