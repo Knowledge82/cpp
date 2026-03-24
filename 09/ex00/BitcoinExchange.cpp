@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/01 13:03:33 by vdarsuye          #+#    #+#             */
-/*   Updated: 2026/03/18 18:58:48 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2026/03/24 11:32:28 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ BitcoinExchange::~BitcoinExchange()
 
 void	BitcoinExchange::loadDB(const std::string& filename)
 {
-	std::ifstream			file(filename.c_str());
+	std::ifstream			file(filename.c_str()); //c_str() returns const char* for std::ifstream
 	if (!file.is_open())
 		throw std::runtime_error("Error: could not open file.");
 
@@ -102,7 +102,7 @@ void	BitcoinExchange::processInput(const std::string& filename)
 		try
 		{
 			double			result = getRate(date) * value;
-			std::cout << date << " => " << value << " = " /*<< std::fixed << std::setprecision(2)*/ << result << std::endl;
+			std::cout << date << " => " << value << " = " << result << std::endl;
 		}
 		catch (std::runtime_error& e)
 		{
@@ -139,6 +139,12 @@ bool	BitcoinExchange::isValidValue(const std::string& value, double& out) const
 {
 	std::istringstream	iss(value);
 	if (!(iss >> out))
+	{
+		std::cerr << "Error: bad input => " << value << std::endl;
+		return false;
+	}
+	iss >> std::ws; // <= added this check and eof
+	if (!iss.eof())
 	{
 		std::cerr << "Error: bad input => " << value << std::endl;
 		return false;
